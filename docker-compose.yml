@@ -1,0 +1,11 @@
+services:
+        ddns:
+                image: alpine/curl
+                command: /bin/sh -c "echo 'Starting ddns updates...'; while true; do ./update.sh | tee -a /var/log/ddns.log; sleep $$DELAY; done"
+                environment:
+                        - DELAY=1
+                working_dir: /ddns
+                volumes:
+                        - .:/ddns
+                        - /var/log/ddns.log:/var/log/ddns.log
+                restart: unless-stopped
